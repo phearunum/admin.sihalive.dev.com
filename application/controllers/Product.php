@@ -7,7 +7,7 @@ class Product extends CI_Controller {
 	public function __construct() 
 	{
 		parent::__construct();
-		$this->load->model('Food_Model', 'food', TRUE);	
+		$this->load->model('Food_Model', 'food');	
     }
 	
 	public function index()

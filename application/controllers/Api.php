@@ -8,7 +8,7 @@ class Api extends CI_Controller {
 	{
 		parent::__construct();	
 		$this->request = json_decode(trim(file_get_contents('php://input'), 'r'), true);
-		$this->load->model('Food_model', 'food');
+		$this->load->model('Food_Model', 'food');
     }
 	
 	public function index()
