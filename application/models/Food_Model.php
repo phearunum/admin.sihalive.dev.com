@@ -9,6 +9,15 @@
 
 		}
 		
+		public function getFoodCategory()
+		{
+			$sql ="SELECT * FROM `category` ORDER BY ca_id ASC"; 
+			$query = $this->db->query($sql, $bind);
+			$rows =  $query->result_array();
+			$query->free_result();
+			return $rows;
+		}
+		
 		public function getFoodForId($f_id)
 		{
 			$sql ="SELECT * FROM food WHERE  f_id = ?";

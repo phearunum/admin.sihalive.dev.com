@@ -32,6 +32,7 @@ class Api extends CI_Controller {
 			
 			$f_id =$this->request['f_id'];
 			$output['body']['row'] = $this->food->getFoodForId($f_id);
+			$output['body']['row']['category_list'] = $this->food->getFoodCategory();
 		}catch(Exception $e)
 		{
 			$output['status'] = $status ;

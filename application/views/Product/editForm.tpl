@@ -38,24 +38,19 @@
 											<div class="control-group">
 											  <label class="control-label" for="typeahead">Food Name </label>
 											  <div class="controls">
-												<input type="text" class="span6" value="{{food.f_name}}">
+												<input type="text" class="span6"  ng-model="food.f_name" >
 											  </div>
 											</div>
 											<div class="control-group">
 											  <label class="control-label" for="textarea2">Food Description</label>
 											  <div class="controls">
-												<textarea class="input-xlarge textarea" placeholder="Enter text ..." style="width: 810px; height: 200px">{{food.f_description}}</textarea>
+												<textarea class="input-xlarge textarea" placeholder="Enter text ..." style="width: 810px; height: 200px"  ng-model="food.f_description" ></textarea>
 											  </div>
 											</div>
 											<div class="control-group">
-											<label class="control-label">Category<span class="required">*</span></label>
+											<label class="control-label">Food Category<span class="required">*</span></label>
 											<div class="controls">
-												<select class="span6 m-wrap" name="category">
-													<option value="">Select...</option>
-													<option value="Category 1">Category 1</option>
-													<option value="Category 2">Category 2</option>
-													<option value="Category 3">Category 5</option>
-													<option value="Category 4">Category 4</option>
+												<select class="span6 m-wrap" ng-model="food.ca_id" ng-options="category.ca_id as category.ca_name for category in food.category_list"  >
 												</select>
 											</div>
 											</div>
