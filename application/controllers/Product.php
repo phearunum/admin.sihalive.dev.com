@@ -10,6 +10,23 @@ class Product extends CI_Controller {
 		$this->load->model('Food_Model', 'food');	
     }
 	
+	public function insert()
+	{
+		$this->smarty->assign(
+			array(
+				'f_id' =>$f_id,
+				'action'	=>'insert'
+			)
+		);
+		$this->smarty->display(__CLASS__.'/foodForm.tpl');
+	}
+	
+	public function doInsert()
+	{
+		$post = $this->input->post();
+		$this->food->insert($post);
+	}
+	
 	public function index()
 	{
 		
@@ -20,10 +37,11 @@ class Product extends CI_Controller {
 	{
 		$this->smarty->assign(
 			array(
-				'f_id' =>$f_id
+				'f_id' 		=>$f_id,
+				'action'	=>'edit'
 			)
 		);
-		$this->smarty->display(__CLASS__.'/editForm.tpl');
+		$this->smarty->display(__CLASS__.'/foodForm.tpl');
 	}
 	
 	

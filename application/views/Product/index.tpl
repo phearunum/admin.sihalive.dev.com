@@ -30,7 +30,7 @@
                                 <div class="navbar navbar-inner block-header">
                                     <div class="muted pull-left">food</div>
                                     <div class="pull-right">
-										<span class="badge badge-info">1,234</span>
+										<a href="/Product/insert" class="icon-plus"></a>
                                     </div>
                                 </div>
                                 <div class="block-content collapse in">

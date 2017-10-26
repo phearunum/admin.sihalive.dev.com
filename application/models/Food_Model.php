@@ -9,6 +9,23 @@
 
 		}
 		
+		public function insert($post)
+		{
+			$bind =array(
+				$post['f_name'],
+				$post['f_description'],
+				$post['ca_id'],
+				$post['f_status'],
+				$post['f_large_price'],
+				$post['f_medium_price'],
+				$post['f_small_price']
+			);
+			$sql ="	INSERT INTO `food` 
+					(f_name ,f_description ,ca_id, f_status, f_large_price, f_medium_price, f_small_price)
+					VALUES(?, ?, ?, ?, ?, ?, ?)";
+			$query = $this->db->query($sql, $bind);
+		}
+		
 		public function getFoodCategory()
 		{
 			$sql ="SELECT * FROM `category` ORDER BY ca_id ASC"; 
