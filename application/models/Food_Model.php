@@ -11,7 +11,31 @@
 		
 		public function edit($post)
 		{
-			// $sql = "UPDATE "
+			$bind = array(
+				$post['f_name'],
+				$post['f_description'],
+				$post['ca_id'],
+				$post['f_status'],
+				$post['f_large_price'],
+				$post['f_medium_price'],
+				$post['f_small_price'],
+				$post['f_id']
+			);
+			$sql = "UPDATE food SET 
+						f_name = ? ,
+						f_description = ? ,
+						ca_id = ? ,
+						f_status = ? ,
+						f_large_price = ? ,
+						f_medium_price = ? ,
+						f_small_price = ? 
+					WHERE f_id =?";
+			$query = $this->db->query($sql, $bind);
+			
+			$output = array(
+				'afftected_rows' =>$this->db->affected_rows(),
+			);
+			return $output;
 		}
 		
 		public function del($f_id)

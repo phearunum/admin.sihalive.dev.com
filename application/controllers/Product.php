@@ -26,15 +26,15 @@ class Product extends CI_Controller {
 		try
 		{
 			$post = $this->input->post();
-			var_dump($post);
+
 			$row = $this->food->edit($post);
 			
-			// if($row['afftected_rows'] == 0)
-			// {
-				// throw new Exception("del error");
-			// }
+			if($row['afftected_rows'] == 0)
+			{
+				throw new Exception("update error");
+			}
 			
-			// $message ='del ok';
+			$message ='update ok';
 			
 			
 		}catch(Exception $e)
@@ -43,7 +43,7 @@ class Product extends CI_Controller {
 			$message =  $e->getMessage();
 		}
 		
-		// $this->myfunc->gotoUrl('/Product', $message);	
+		$this->myfunc->gotoUrl('/Product', $message);	
 	}
 	
 	public function delFood($f_id)

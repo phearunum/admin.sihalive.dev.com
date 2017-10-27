@@ -50,7 +50,9 @@
 												<div class="control-group">
 													<label class="control-label">Food Category<span class="required">*</span></label>
 													<div class="controls">
-														<select required name="ca_id"  class="span2 m-wrap"  ng-model="ca_id_selected" ng-options="category.ca_id as category.ca_name for category in food.category_list track by category.ca_id"  ></select>
+														<select required  name="ca_id"  class="span2 m-wrap"  ng-model="food.ca_id" >
+															<option value="{{category.ca_id}}" ng-repeat="category in category_list">{{category.ca_name}}</option>
+														</select>
 													</div>
 												</div>
 												<div class="control-group">
@@ -74,7 +76,8 @@
 												<div class="control-group">
 													<label class="control-label">Food Category<span class="required">*</span></label>
 													<div class="controls">
-														<select class="span2 m-wrap" required  name="f_status" ng-model="f_status_selected"  ng-options="status.value as status.name  for status in status_list track by status.value"  >
+														<select class="span2 m-wrap" required  name="f_status" ng-model="food.f_status">
+															<option value="{{status.value}}" ng-repeat="status in status_list">{{status.value}}</option>
 														</select>
 													</div>
 												</div>
@@ -87,7 +90,7 @@
 															<span class="action" style="user-select: none;">Choose File</span>
 														</div>
 														<p class="help-block">main menu image</p>
-														<img  alt="310*260" style="width: 310px; height: 260px;" ng-src="<{$config.food_url}>/images/food/{{food.ca_id}}-{{food.f_id}}-310x260.png">
+														<img  alt="310*260" style="width: 310px; height: 260px;" ng-src="<{$config.food_url}>/images/food/{{food.f_image}}">
 													</div>
 												</div>
 												<div class="form-actions">
