@@ -8,6 +8,7 @@ var FoodListApi ="/Api/foodListApi/";
 var adminApp = angular.module("adminApp", []);
 
 var foodEditCtrl = function($scope, $http){
+
 	$scope.status_list = [
         {value :'sale_out' , name:'sale_out'},
         {value :'sale_on' , name:'sale_on'},
@@ -49,6 +50,12 @@ var foodEditCtrl = function($scope, $http){
 }
 
 var tableCtrl = function($scope, $http){
+	$scope.del = function(f_id, $event){
+		if(!confirm('confirm deletion'))
+		{
+			$event.preventDefault();
+		}
+	}
 	$http({
         method: 'POST',
         url: FoodListApi,

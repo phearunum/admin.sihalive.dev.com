@@ -82,17 +82,19 @@
 													<label class="control-label" for="fileInput">310*260 Food Image </label>
 													<div class="controls">
 														<div class="uploader" id="uniform-fileInput">
-															<input required class="input-file uniform_on" name="images" id="fileInput" type="file">
+															<input  class="input-file uniform_on" name="images" id="fileInput" type="file">
 															<span class="filename" style="user-select: none;">No file selected</span>
 															<span class="action" style="user-select: none;">Choose File</span>
 														</div>
 														<p class="help-block">main menu image</p>
+														<img  alt="310*260" style="width: 310px; height: 260px;" ng-src="<{$config.food_url}>/images/food/{{food.ca_id}}-{{food.f_id}}-310x260.png">
 													</div>
 												</div>
 												<div class="form-actions">
 													<button type="submit" class="btn btn-primary">Save changes</button>
 												</div>
 											</fieldset>
+											<input name="f_id" type="hidden"   ng-model="food.f_id" ng-bind="food.f_id" value="{{food.f_id}}">
 										</form>
 									</div>
 								</div>

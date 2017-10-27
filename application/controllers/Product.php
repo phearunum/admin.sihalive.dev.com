@@ -21,10 +21,95 @@ class Product extends CI_Controller {
 		$this->smarty->display(__CLASS__.'/foodForm.tpl');
 	}
 	
+	public function doEdit()
+	{
+		try
+		{
+			$post = $this->input->post();
+			var_dump($post);
+			$row = $this->food->edit($post);
+			
+			// if($row['afftected_rows'] == 0)
+			// {
+				// throw new Exception("del error");
+			// }
+			
+			// $message ='del ok';
+			
+			
+		}catch(Exception $e)
+		{
+			
+			$message =  $e->getMessage();
+		}
+		
+		// $this->myfunc->gotoUrl('/Product', $message);	
+	}
+	
+	public function delFood($f_id)
+	{
+		try
+		{
+			$row = $this->food->del($f_id);
+			
+			if($row['afftected_rows'] == 0)
+			{
+				throw new Exception("del error");
+			}
+			
+			$message ='del ok';
+			
+			
+		}catch(Exception $e)
+		{
+			
+			$message =  $e->getMessage();
+		}
+		
+		$this->myfunc->gotoUrl('/Product', $message);
+	}
+	
 	public function doInsert()
 	{
-		$post = $this->input->post();
-		$this->food->insert($post);
+		try
+		{
+			$post = $this->input->post();
+			$row = $this->food->insert($post);
+			
+			if($row['afftected_rows'] == 0)
+			{
+				throw new Exception("insert error");
+			}
+			
+			$config['upload_path']      = APPPATH.'../../food.sihalive.com/images/food/';
+			$config['allowed_types']    = 'png';
+			$config['max_width']        = 310;
+			$config['max_height']       = 260;
+			$config['file_name']       = sprintf("%d-%d-310x260", $post['ca_id'], $row['f_id']);
+
+			$this->load->library('upload', $config);
+
+			if ( ! $this->upload->do_upload('images'))
+			{
+
+			}
+			else
+			{
+				$data = array('upload_data' => $this->upload->data());
+				
+			}
+			
+			
+			$message ='insert ok';
+			
+			
+		}catch(Exception $e)
+		{
+			
+			$message =  $e->getMessage();
+		}
+		
+		$this->myfunc->gotoUrl('/Product', $message);
 	}
 	
 	public function index()

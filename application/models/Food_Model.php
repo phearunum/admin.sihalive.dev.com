@@ -9,6 +9,26 @@
 
 		}
 		
+		public function edit($post)
+		{
+			// $sql = "UPDATE "
+		}
+		
+		public function del($f_id)
+		{
+			$sql = "UPDATE `food` SET `f_is_del` = '1' WHERE `food`.`f_id` = ?;";
+			$bind = array(
+				$f_id
+			);
+			
+			$query = $this->db->query($sql, $bind);
+			
+			$output = array(
+				'afftected_rows' =>$this->db->affected_rows(),
+			);
+			return $output;
+		}
+		
 		public function insert($post)
 		{
 			$bind =array(
@@ -20,10 +40,18 @@
 				$post['f_medium_price'],
 				$post['f_small_price']
 			);
+			
 			$sql ="	INSERT INTO `food` 
 					(f_name ,f_description ,ca_id, f_status, f_large_price, f_medium_price, f_small_price)
 					VALUES(?, ?, ?, ?, ?, ?, ?)";
 			$query = $this->db->query($sql, $bind);
+			$insert_id = $this->db->insert_id();
+			
+			$output = array(
+				'f_id'			 =>$insert_id,
+				'afftected_rows' =>$this->db->affected_rows()
+			);
+			return $output;
 		}
 		
 		public function getFoodCategory()
@@ -47,9 +75,21 @@
 			return $row;
 		}
 		
-		public function getFoodFroList()
+		public function getFoodFroList($where = array())
 		{
-			$sql ="SELECT * FROM food AS fd INNER JOIN category AS cy ON fd.ca_id = cy.ca_id";
+			$where_str =" 1 = 1 AND f_is_del='0'";
+			if(!empty($where) )
+			{
+				foreach($where as $key =>$vale)
+				{
+					$where_str.=sprintf(" AND %s = ?", $key);
+					$bind[] = $value;
+				}
+			}
+			$sql ="	SELECT * 
+					FROM 
+					food AS fd INNER JOIN category AS cy ON fd.ca_id = cy.ca_id
+						WHERE".$where_str;
 			$query = $this->db->query($sql, $bind);
 			$rows  =  $query->result_array();
 			$query->free_result();

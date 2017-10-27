@@ -37,7 +37,7 @@
                                     <table class="table table-striped">
                                         <thead>
                                             <tr>
-                                                <th>id</th>
+                                                <!-- <th>id</th> -->
                                                 <th>name</th>
                                                 <th>price</th>
                                                 <th>status</th>
@@ -47,13 +47,18 @@
                                         </thead>
                                         <tbody>
                                             <tr ng-repeat="food in foods">
-                                                <td>{{food.f_id}}</td>
+                                                <!-- <td>{{food.f_id}}</td> -->
                                                 <td>{{food.f_name}}</td>
-                                                <td>{{food.f_price}}</td>
+                                                <td>
+													large_price:{{food.f_large_price}}<br>
+													medium_price:{{food.f_medium_price}}<br>
+													small_price:{{food.f_small_price}}
+												</td>
                                                 <td>{{food.f_status}}</td>
                                                 <td>{{food.ca_name}}</td>
                                                 <td>
 													<a href="/Product/editForm/{{food.f_id}}" class="icon-cog"></a>
+													<a href="/Product/delFood/{{food.f_id}}" ng-click="del(food.f_id, $event)" class=" icon-remove"></a>
 												</td>
                                             </tr>
                                         </tbody>

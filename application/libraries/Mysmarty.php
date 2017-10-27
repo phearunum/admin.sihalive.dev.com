@@ -22,10 +22,11 @@ class Mysmarty
 	{
 
 		$language_ary = $this->CI->language->load('main');
-		
+		$config['food_url'] = $this->CI->config->item('food_url');
 		$this->assign(array(
 			'language'	=>$language_ary,
-			'randseed'	=>$this->randseed
+			'randseed'	=>$this->randseed,
+			'config'	=>$config
 		));
 		$this->smarty->clearAllCache();
 		$this->smarty->display($tpl);
