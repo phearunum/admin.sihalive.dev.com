@@ -90,7 +90,7 @@
 															<span class="action" style="user-select: none;">Choose File</span>
 														</div>
 														<p class="help-block">main menu image</p>
-														<img  alt="310*260" style="width: 310px; height: 260px;" ng-src="<{$config.food_url}>/images/food/{{food.f_image}}">
+														<img  alt="310*260" style="width: 310px; height: 260px;" ng-src="<{$config.food_url}>/images/food/{{food.f_img_310x260}}">
 													</div>
 												</div>
 												<div class="form-actions">

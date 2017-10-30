@@ -27,19 +27,39 @@ class Product extends CI_Controller {
 		{
 			$post = $this->input->post();
 
+			
+			$config['upload_path']      = APPPATH.'../../food.sihalive.com/images/food/';
+			$config['allowed_types']    = 'png';
+			$config['max_width']        = 310;
+			$config['max_height']       = 260;
+			$config['file_name']       = md5(time().$post['f_id'].rand(1,999));
+
+			$this->load->library('upload', $config);
+
+			if ( ! $this->upload->do_upload('images'))
+			{
+				// var_dump( $this->upload->display_errors());
+			}
+			else
+			{
+				$data = array('upload_data' => $this->upload->data());
+				$post['310x260']= $data['upload_data']['orig_name'];
+				$this->food->UpdImage($post);
+				$imgupd = 1;
+			}
+			
 			$row = $this->food->edit($post);
 			
-			if($row['afftected_rows'] == 0)
+			if($row['afftected_rows'] == 0  && $imgupd !=1 )
 			{
 				throw new Exception("update error");
 			}
-			
 			$message ='update ok';
 			
 			
 		}catch(Exception $e)
 		{
-			
+			echo"D";
 			$message =  $e->getMessage();
 		}
 		
@@ -85,7 +105,7 @@ class Product extends CI_Controller {
 			$config['allowed_types']    = 'png';
 			$config['max_width']        = 310;
 			$config['max_height']       = 260;
-			$config['file_name']       = sprintf("%d-%d-310x260", $post['ca_id'], $row['f_id']);
+			$config['f_img_310x260']       =  md5(time().$row['f_id'].rand(1,999));
 
 			$this->load->library('upload', $config);
 
@@ -96,7 +116,9 @@ class Product extends CI_Controller {
 			else
 			{
 				$data = array('upload_data' => $this->upload->data());
-				
+				$post['310x260']= $data['upload_data']['orig_name'];
+				$this->food->UpdImage($post);
+				// var_dump($data);
 			}
 			
 			

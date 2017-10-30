@@ -9,6 +9,18 @@
 
 		}
 		
+			
+		public function UpdImage($post)
+		{
+			$sql ="UPDATE food SET f_img_310x260 = ? WHERE f_id =?";
+			$bind = array(
+				$post['310x260'],
+				$post['f_id']
+			);
+			$this->db->query($sql, $bind);
+		}
+		
+		
 		public function edit($post)
 		{
 			$bind = array(
