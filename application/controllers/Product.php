@@ -14,11 +14,22 @@ class Product extends CI_Controller {
 	{
 		$this->smarty->assign(
 			array(
-				'f_id' =>$f_id,
-				'action'	=>'insert'
+				'f_id' 			=>$f_id,
+				'action'		=>'insert',
+				'activeMenu'	=>'Product'
 			)
 		);
 		$this->smarty->display(__CLASS__.'/foodForm.tpl');
+	}
+	
+	public function category()
+	{
+		$this->smarty->assign(
+			array(
+				'activeMenu'	=>'Product'
+			)
+		);
+		$this->smarty->display(__CLASS__.'/categoryForm.tpl');
 	}
 	
 	public function doEdit()
@@ -145,7 +156,8 @@ class Product extends CI_Controller {
 		$this->smarty->assign(
 			array(
 				'f_id' 		=>$f_id,
-				'action'	=>'edit'
+				'action'	=>'edit',
+				'activeMenu'	=>'Product'
 			)
 		);
 		$this->smarty->display(__CLASS__.'/foodForm.tpl');

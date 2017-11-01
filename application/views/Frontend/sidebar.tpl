@@ -1,10 +1,15 @@
+<script>
+	var activeMenu ='<{$activeMenu}>';
+	alert(activeMenu);
+</script>
 <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-	<li class="active">
+	<li  ng-class="{active : activeMenu === 'Product'}">
 		<a href="/Product/"><i class="icon-chevron-right"></i> Product</a>
 	</li>
-	<li>
-		<a href="calendar.html"><i class="icon-chevron-right"></i> Calendar</a>
+	<li ng-class="{active : activeMenu === 'Category'}">
+		<a href="/Product/category"><i class="icon-chevron-right"></i> Category</a>
 	</li>
+	<{*
 	<li>
 		<a href="stats.html"><i class="icon-chevron-right"></i> Statistics (Charts)</a>
 	</li>
@@ -47,4 +52,5 @@
 	<li>
 		<a href="#"><span class="badge badge-warning pull-right">4,231</span> Logs</a>
 	</li>
+	*}>
 </ul>

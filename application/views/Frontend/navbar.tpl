@@ -23,6 +23,7 @@
 						</ul>
 					</li>
 				</ul>
+				<{*
 				<ul class="nav">
 					<li class="active">
 						<a href="#">Dashboard</a>
@@ -103,6 +104,7 @@
 						</ul>
 					</li>
 				</ul>
+				*}>
 			</div>
 			<!--/.nav-collapse -->
 		</div>
