@@ -5,6 +5,7 @@ var FoodListApi ="/Api/foodListApi/";
 var OrderListApi ="/Api/orderList/";
 var OrderDetailListApi ="/Api/orderDetailList/";
 var UpdateOrderStatusApi ="/Api/updateOrderStatus/";
+var OrdersCountApi ="/Api/ordersCount/";
 
 
 
@@ -76,8 +77,17 @@ var tableCtrl = function($scope, $http){
 	); 
 };
 
-var ordersCtrl = function($scope, $http)
+var ordersCtrl = function($scope, $http, $rootScope)
 {
+	$rootScope.$on('uploadOrders', function(event, data){
+		if(typeof data['orders_count'][1] =='undefined')
+		{
+			$scope.newOrdersCount=0;
+		}else
+		{
+			$scope.newOrdersCount = data['orders_count'][1]['total'];
+		}
+    })
 	
 	$scope.search = function()
 	{
@@ -98,6 +108,9 @@ var ordersCtrl = function($scope, $http)
 		$('input[name=o_datetime_end]').val('');
 		$('input[name=o_id]').val('');
 		$('select[name=o_status]').val('all');
+		$('select[name=recods]').val('10');
+		$scope.search_status='all';
+		$scope.records='10';
 		$scope.ordersList();
 		$scope.search_click = false;
 	}
@@ -147,6 +160,15 @@ var ordersCtrl = function($scope, $http)
 					{
 						order.change_status = false;
 						order.original_status = o_status;
+						var orders_count = response['data']['body']['orders_count'];
+						if(typeof orders_count[1] !='undefined')
+						{
+							$scope.newOrdersCount = parseInt(orders_count[1]['total']);
+						}else{
+							$scope.newOrdersCount=0;
+						}
+						$rootScope.$broadcast('uploadSidebarOrders', orders_count);
+						
 					}else
 					{
 						alert(response['data']['message']);
@@ -231,22 +253,84 @@ var bodyCtrl = function($scope, $http, MyService)
 
 }
 
-adminApp.factory('MyService', ['$q', '$rootScope', function($q, $rootScope) 
+var sidebarCtrl = function($scope, $http, $rootScope)
+{
+	
+	$rootScope.$on('uploadSidebarOrders', function(event, data){
+		$scope.orders_count = data;
+    })
+	
+	$scope.init = function()
+	{
+		
+		// $scope.orders_count =1;
+		$http({
+			method: 'GET',
+			url: OrdersCountApi,
+			headers: {'Content-Type': 'application/json'},
+		}).then(
+			function successCallback(response) {
+				if(response['data']['status'] =='100')
+				{
+					$scope.orders_count = response['data']['body']['orders_count'];
+					$rootScope.$broadcast('uploadOrders', {orders_count:$scope.orders_count});
+				}else
+				{
+					alert(response['data']['message']);
+				}
+			}, 
+			function errorCallback(response) {
+				// 请求失败执行代码
+				alert('system error');
+			}
+		);
+	};
+}
+
+adminApp.factory('MyService', ['$q', '$rootScope', '$http', function($q, $rootScope, $http) 
 {
 	var Service = {};
 	var url ="";
 	var uid ="001";
-	// var socket = io('http://websokcet.sihalive.dev.com:2120');
+	var socket = io('http://websokcet.sihalive.com:2120');
 	// var ws = new WebSocket("ws://"+ws_domain+":2120");
-	// socket.on('connect', function(){
-    	// socket.emit('login', uid);
-    // });
+	socket.on('connect', function(){
+		// alert('d');
+    	socket.emit('login', uid);
+    });
+	
+	
+	socket.on('order_alert', function(msg){
+		$http({
+			method: 'GET',
+			url: OrdersCountApi,
+			headers: {'Content-Type': 'application/json'},
+		}).then(
+			function successCallback(response) {
+				if(response['data']['status'] =='100')
+				{
+					var orders_count = response['data']['body']['orders_count'];
+					$rootScope.$broadcast('uploadOrders', {orders_count:orders_count});
+					$rootScope.$broadcast('uploadSidebarOrders', orders_count);
+					
+				}else
+				{
+					alert(response['data']['message']);
+				}
+			}, 
+			function errorCallback(response) {
+				// 请求失败执行代码
+				alert('system error');
+			}
+		);
+    });
 	return Service;
 }]);
 adminApp.controller('tableCtrl',  ['$scope', '$http', tableCtrl]);
 adminApp.controller('foodEditCtrl',  ['$scope', '$http', foodEditCtrl]);
-adminApp.controller('ordersCtrl',  ['$scope', '$http', ordersCtrl]);
+adminApp.controller('ordersCtrl',  ['$scope', '$http', '$rootScope', ordersCtrl]);
 adminApp.controller('bodyCtrl',  ['$scope', '$http', 'MyService', bodyCtrl]);
+adminApp.controller('sidebarCtrl',  ['$scope', '$http', '$rootScope', sidebarCtrl]);
 
 
 

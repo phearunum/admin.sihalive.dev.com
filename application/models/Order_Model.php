@@ -9,6 +9,24 @@
 
 		}
 		
+		
+		public function getOrdersCount()
+		{
+			$sql ="SELECT 
+					o_status,
+					os_name,
+					COUNT(*) as total 
+					FROM `order_list` AS ol
+						INNER JOIN user AS u ON ol.u_id = u.u_id
+						INNER JOIN order_status AS os ON os.os_id = ol.o_status
+				    GROUP BY ol.o_status 
+					ORDER BY o_status ASC";
+			$query = $this->db->query($sql, $bind);
+			$rows =  $query->result_array();
+			$query->free_result();
+			return $rows;
+		}
+		
 		public function getOrderStatus()
 		{
 			$sql ="SELECT * FROM `order_status` ORDER BY `os_id` ASC";
@@ -39,10 +57,11 @@
 			{
 				foreach($ary   as $key =>$value)
 				{
-					if($key =="recods" || $key="p")
+					if($key =="recods" || $key=="p")
 					{
 						continue;
 					}
+					
 					if($value !="" && $value!="all")
 					{
 						$where.=sprintf(" AND %s = ?", $key);
@@ -65,6 +84,7 @@
 					".$where."
 					ORDER BY o_id DESC , ol.o_status ASC
 					";
+			// echo $sql;
 			$limit = sprintf(" LIMIT %d ,%d ", abs($ary['p']-1)*$ary['recods'], $ary['recods']);
 			$search_sql =$sql.$limit ;
 			$query = $this->db->query($search_sql, $bind);

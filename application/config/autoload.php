@@ -60,7 +60,11 @@ $autoload['packages'] = array();
 */
 // $autoload['libraries'] = array();
 
-$autoload['libraries'] = array('Mysmarty' =>'smarty', 'MyFunc'=>'myfunc', 'My_Language' =>'language');
+$autoload['libraries'] = array(
+	'Mysmarty' =>'smarty', 
+	'MyFunc'=>'myfunc', 
+	'My_Language' =>'language'
+);
 
 /*
 | -------------------------------------------------------------------

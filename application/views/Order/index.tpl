@@ -1,5 +1,11 @@
 <div class="span10" id="content" ng-controller="ordersCtrl" ng-init="ordersList()">
 	<div class="row-fluid">
+		<div class="alert alert-error alert-block" ng-show="newOrdersCount >0">
+			<h4 class="alert-heading">Orders Come !</h4>
+			<p>you have new orders</p>
+		</div>
+	</div>
+	<div class="row-fluid">
 		<!-- block -->
 		<div class="block">
 			<div class="navbar navbar-inner block-header ">

@@ -1,6 +1,9 @@
-<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-	<li>
-		<a href="#"><span class="badge badge-success pull-right">731</span> Orders</a>
+<ul class="nav nav-list bs-docs-sidenav nav-collapse collapse" ng-controller="sidebarCtrl" ng-init="init()">
+	<li ng-repeat="od in orders_count">
+		<a href="#">
+			<span class="badge pull-right" ng-class="od.o_status =='1'?'badge-important':''" ng-model="od.total" ng-bind="od.total">731</span> 
+			Orders-{{od.os_name}}
+		</a>
 	</li>
 	<{*
 	<li>

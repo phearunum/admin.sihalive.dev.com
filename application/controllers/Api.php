@@ -13,6 +13,32 @@ class Api extends CI_Controller {
 		$this->load->library('pagination');
     }
 	
+	
+	public function ordersCount()
+	{
+		$output['status'] = 100;
+		$output['body'] =array();
+		$output['title'] ='get Order Count';
+		try 
+		{
+			$rows= $this->order->getOrdersCount();
+			if(!empty($rows))
+			{
+				foreach($rows as $value)
+				{
+					$orders_count[$value['o_status']] = $value;
+				}
+			}
+			$output['body']['orders_count'] = $orders_count;
+		}catch(Exception $e)
+		{
+			$output['status'] = $status ;
+			$output['message'] = $e->getMessage();
+		}
+		
+		$this->response($output);
+	}
+	
 	public function orderDetailList($o_id)
 	{
 		$output['status'] = 100;
@@ -47,6 +73,15 @@ class Api extends CI_Controller {
 				$status ='000';
 				throw new Exception("update error");
 			}
+			$rows = $this->order->getOrdersCount();
+			if(!empty($rows))
+			{
+				foreach($rows as $value)
+				{
+					$orders_count[$value['o_status']] = $value;
+				}
+			}
+			$output['body']['orders_count'] = $orders_count;
 		}catch(Exception $e)
 		{
 			$output['status'] = $status ;
