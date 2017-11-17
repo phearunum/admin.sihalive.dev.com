@@ -7,7 +7,7 @@
 
 <script src="/assets/form-validation.js"></script>
 
-<script src="/js/main.js"></script>
+<script src="/js/main.js?<{$randseed}>"></script>
 
 <script src="/vendors/jquery.uniform.min.js"></script>
 <script src="/vendors/chosen.jquery.min.js"></script>
@@ -20,6 +20,13 @@
 
 <script type="text/javascript" src="/vendors/jquery-validation/dist/jquery.validate.min.js"></script>
 
+
+<script src="/vendors/datatables/js/jquery.dataTables.min.js"></script>
+
+
+<script src="/assets/scripts.js"></script>
+<script src="/assets/DT_bootstrap.js"></script>
+<script src='//cdn.bootcss.com/socket.io/1.3.7/socket.io.js'></script>
 <{if $jsArray}>
 	<{foreach from=$jsArray item=file}>
 		<link rel="stylesheet" href="/js/<{$file}>">

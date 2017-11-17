@@ -7,8 +7,10 @@
 <link href="/vendors/uniform.default.css" rel="stylesheet" media="screen">
 <link href="/vendors/chosen.min.css" rel="stylesheet" media="screen">
 <link href="/vendors/wysiwyg/bootstrap-wysihtml5.css" rel="stylesheet" media="screen">
+<link href="/assets/DT_bootstrap.css" rel="stylesheet" media="screen">
 <{if $cssArray}>
 	<{foreach from=$cssArray item=file}>
 		<link rel="stylesheet" href="/css/<{$file}>">
 	<{/foreach}>
 <{/if}>
+

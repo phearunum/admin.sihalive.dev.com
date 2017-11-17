@@ -19,7 +19,7 @@ class Product extends CI_Controller {
 				'activeMenu'	=>'Product'
 			)
 		);
-		$this->smarty->display(__CLASS__.'/foodForm.tpl');
+		$this->smarty->displayFrame(__CLASS__.'/foodForm.tpl');
 	}
 	
 	public function category()
@@ -70,7 +70,6 @@ class Product extends CI_Controller {
 			
 		}catch(Exception $e)
 		{
-			echo"D";
 			$message =  $e->getMessage();
 		}
 		
@@ -148,7 +147,7 @@ class Product extends CI_Controller {
 	public function index()
 	{
 		
-		$this->smarty->display(__CLASS__.'/index.tpl');
+		$this->smarty->displayFrame(__CLASS__.'/index.tpl');
 	}
 	
 	public function editForm($f_id)
@@ -160,7 +159,7 @@ class Product extends CI_Controller {
 				'activeMenu'	=>'Product'
 			)
 		);
-		$this->smarty->display(__CLASS__.'/foodForm.tpl');
+		$this->smarty->displayFrame(__CLASS__.'/foodForm.tpl');
 	}
 	
 	

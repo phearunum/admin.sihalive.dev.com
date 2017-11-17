@@ -35,9 +35,10 @@ class Mysmarty
 	public function displayFrame($tpl)
 	{
 		$this->assign(array(
-			'content_tpl'	=>'front_end/block/'.$tpl
+			'content'	=>$tpl,
+			'randseed'	=>$this->randseed,
 		));
-		$this->smarty->display('front_end/frame.tpl');
+		$this->smarty->display('Frontend/frame.tpl');
 	}
 	
 	public function assign($var)

@@ -1,13 +1,6 @@
-<script>
-	var activeMenu ='<{$activeMenu}>';
-	alert(activeMenu);
-</script>
 <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse">
-	<li  ng-class="{active : activeMenu === 'Product'}">
-		<a href="/Product/"><i class="icon-chevron-right"></i> Product</a>
-	</li>
-	<li ng-class="{active : activeMenu === 'Category'}">
-		<a href="/Product/category"><i class="icon-chevron-right"></i> Category</a>
+	<li>
+		<a href="#"><span class="badge badge-success pull-right">731</span> Orders</a>
 	</li>
 	<{*
 	<li>
