@@ -57,7 +57,7 @@
 			{
 				foreach($ary   as $key =>$value)
 				{
-					if($key =="recods" || $key=="p")
+					if($key =="records" || $key=="p")
 					{
 						continue;
 					}
@@ -75,17 +75,19 @@
 						u.u_name,
 						u.u_email,
 						u.fb_u_id,
+						pn.p_name,
 						(SELECT SUM(od_price) FROM order_detail AS t1 WHERE t1.o_id = ol.o_id) AS ol_total , 
 						false AS detailShow
 					FROM 
 						order_list AS ol 
 							INNER JOIN user AS u ON u.u_id = ol.u_id
 							INNER JOIN order_status AS os ON os.os_id = ol.o_status
+							LEFT JOIN position AS pn ON pn.p_id = ol.o_position_id
 					".$where."
 					ORDER BY o_id DESC , ol.o_status ASC
 					";
 			// echo $sql;
-			$limit = sprintf(" LIMIT %d ,%d ", abs($ary['p']-1)*$ary['recods'], $ary['recods']);
+			$limit = sprintf(" LIMIT %d ,%d ", abs($ary['p']-1)*$ary['records'], $ary['records']);
 			$search_sql =$sql.$limit ;
 			$query = $this->db->query($search_sql, $bind);
 			$rows =  $query->result_array();

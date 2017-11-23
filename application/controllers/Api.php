@@ -64,10 +64,33 @@ class Api extends CI_Controller {
 		$output['status'] = 100;
 		$output['body'] =array();
 		$output['title'] ='Update Order Status';
-		$ary = $this->input->get();
 		try 
 		{
-			$row = $this->order->updOrderStatus($ary);
+			if(is_array($this->request['o_id']))
+			{
+				if(empty($this->request['o_id']))
+				{
+					$status ='000';
+					throw new Exception("o_id error");
+				}
+				
+				foreach($this->request['o_id'] as $key =>$value)
+				{
+					$afftected_rows = 0;
+					$temp =array(
+						'o_id'	=>$value,
+						'o_status'	=>$this->request['o_status']
+					);
+					$row = $this->order->updOrderStatus($temp);
+					$afftected_rows+=$row['afftected_rows'];
+				}
+				$row['afftected_rows'] = $afftected_rows;
+				
+			}else
+			{
+				$row = $this->order->updOrderStatus($this->request);
+			}
+			
 			if($row['afftected_rows'] <=0)
 			{
 				$status ='000';
@@ -103,7 +126,7 @@ class Api extends CI_Controller {
 			$output['body']['orders'] = $data['rows'];
 			$output['body']['total'] = $data['total'];
 			
-			$page_numbers = $output['body']['total']/$ary['recods'] ;
+			$page_numbers = ceil($output['body']['total']/$ary['records'] );
 			for($i=1;$i<=$page_numbers;$i++)
 			{
 				$pages[] = array('p'=>$i);

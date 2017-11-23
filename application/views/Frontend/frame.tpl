@@ -12,40 +12,34 @@
         <script src="/vendors/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     
-    <body ng-controller="bodyCtrl">
+    <body ng-controller="bodyCtrl" ng-init="bodyinit()">
 		<{*navbar*}>
 		<{include file='Frontend/navbar.tpl'}>
         <div class="container-fluid">
             <div class="row-fluid">
                 <div class="span2" id="sidebar">
-                    <{include file='Frontend/sidebar.tpl'}>
+                    <ul class="nav nav-list bs-docs-sidenav nav-collapse collapse" >
+						<li  ng-repeat="od in orders_count" ng-show="od.o_status !=4" >
+							<a href="/#!/?status={{od.o_status}}">
+								<span  class="badge pull-right" ng-class="od.o_status =='1'?'badge-important':''" ng-model="od.total" ng-bind="od.total"></span> 
+								{{od.os_name}}
+							</a>
+						</li>
+					</ul>
                 </div>
-                <!--/span-->
-				<{*
+				<div class="span10" id="content">
 				<div class="row-fluid">
-					<div class="alert alert-success">
-						<button type="button" class="close" data-dismiss="alert">×</button>
-						<h4>Success</h4>
-						The operation completed successfully
-					</div>
-					<div class="navbar">
-						<div class="navbar-inner">
-							<ul class="breadcrumb">
-								<i class="icon-chevron-left hide-sidebar"><a href="#" title="Hide Sidebar" rel="tooltip">&nbsp;</a></i>
-								<i class="icon-chevron-right show-sidebar" style="display:none;"><a href="#" title="Show Sidebar" rel="tooltip">&nbsp;</a></i>
-								<li>
-									<a href="#">Dashboard</a> <span class="divider">/</span>	
-								</li>
-								<li>
-									<a href="#">Settings</a> <span class="divider">/</span>	
-								</li>
-								<li class="active">Tools</li>
-							</ul>
-						</div>
+					<div class="alert alert-error alert-block" ng-show="newOrderCount >0">
+						<h4 class="alert-heading">Orders Come !</h4>
+						<p>you have new orders</p>
 					</div>
 				</div>
-				*}>
-				<{include file=$content}>
+                <!--/span-->
+				<{if $content !=""}>
+					<{include file=$content}>
+				<{/if}>
+				<ng-view></ng-view>
+				</div>
             </div>
             <hr>
 			<{*footer*}>

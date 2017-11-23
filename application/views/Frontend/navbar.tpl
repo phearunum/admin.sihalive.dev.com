@@ -25,7 +25,7 @@
 				</ul>
 				<ul class="nav">
 					<li class="dropdown">
-						<a href="#" data-toggle="dropdown" class="dropdown-toggle">Order <b class="caret"></b>
+						<a href="" data-toggle="dropdown" class="dropdown-toggle">Order <b class="caret"></b>
 
 						</a>
 						<ul class="dropdown-menu" id="menu1">
@@ -37,12 +37,12 @@
 						</ul>
 					</li>
 					<li class="dropdown">
-						<a href="#" data-toggle="dropdown" class="dropdown-toggle">food<b class="caret"></b>
+						<a href="" data-toggle="dropdown" class="dropdown-toggle">food<b class="caret"></b>
 
 						</a>
 						<ul class="dropdown-menu" id="menu1">
 							<li>
-								<a href="/Product">List</i>
+								<a href="#!food">List</i>
 
 								</a>
 							</li>

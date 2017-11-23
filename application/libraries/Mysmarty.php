@@ -32,7 +32,7 @@ class Mysmarty
 		$this->smarty->display($tpl);
 	}
 	
-	public function displayFrame($tpl)
+	public function displayFrame($tpl="")
 	{
 		$this->assign(array(
 			'content'	=>$tpl,

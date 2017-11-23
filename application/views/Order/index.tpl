@@ -36,7 +36,7 @@
 							<span>~datetime_end:</span>
 							<input name="o_datetime_end" type="input">
 						*}>
-						<button class="btn btn-mini" ng-click="search()">submit</button>
+						<button class="btn btn-mini" id="search-btn" ng-click="search()">submit</button>
 						<input type="reset" ng-click="reset()" ng-show="search_click" ng-model="search_click" ng-init="search_click=false" class="btn btn-mini" value="reset">
 					</div>
 				</form>
@@ -48,7 +48,7 @@
 							<tr>
 								<th>#</th>
 								<th>o_id</th>
-								<th>u_info</th>
+								<th>delivery_info</th>
 								<th>o_datetime</th>
 								<th>o_status</th>
 								<th>action</th>
@@ -62,9 +62,10 @@
 							</td>
 							<td  align="right">{{order.o_id}}</td>
 							<td>
-								<span ng-if="order.u_name !=NULL" >u_name : {{order.u_name}}<br></span>
-								<span ng-if="order.u_email !=NULL" >u_email : {{order.u_email}}<br></span>
-								<span ng-if="order.fb_u_id !=NULL" >fb_u_id : {{order.fb_u_id}}</span>
+								<span>consignee : {{order.o_consignee}}<br></span>
+								<span>phone : {{order.o_phone}}<br></span>
+								<span>messge : {{order.o_messge}}<br></span>
+								<span ng-if="order.o_position_id !=0">o_position : {{order.p_name}}<br></span>
 							</td>
 							<td>{{order.o_datetime}}</td>
 							<td>
@@ -107,22 +108,22 @@
 
 						*}>
 					</table>
-					<div class="row">
-						<div class="span6">
-							<div class="dataTables_info" id="example_info">Showing 1 to 10 of 57 entries</div>
-						</div>
-						<div class="span6">
-							<div class="dataTables_paginate paging_bootstrap pagination">
-								<ul>
-									<li ng-show="pages" ng-click="page_prev(prev)" class="prev" ng-class="p=='1'?'disabled':''">
-										<a href="#">← Previous</a>
-									</li>
-									<li  ng-click="setPage(page.p)" ng-class=" p  == page.p?'active':''" ng-repeat="page in pages">
-										<a href="">{{page.p}}</a>
-									</li>
-									<li ng-show="pages" ng-click="page_next(next)" class="next" ng-class="p==pages.length?'disabled':''"><a href="#">Next → </a></li>
-								</ul>
-							</div>
+				</div>
+				<div class="row">
+					<div class="span6">
+						<div class="dataTables_info" style="margin-left :32px" id="example_info">Showing 1 to 10 of {{total}} entries</div>
+					</div>
+					<div class="span6">
+						<div class="dataTables_paginate paging_bootstrap pagination">
+							<ul>
+								<li ng-show="pages" ng-click="page_prev(prev)" class="prev" ng-class="p=='1'?'disabled':''">
+									<a href="#">← Previous</a>
+								</li>
+								<li  ng-click="setPage(page.p)" ng-class=" p  == page.p?'active':''" ng-repeat="page in pages">
+									<a href="">{{page.p}}</a>
+								</li>
+								<li ng-show="pages" ng-click="page_next(next)" class="next" ng-class="p==pages.length?'disabled':''"><a href="#">Next → </a></li>
+							</ul>
 						</div>
 					</div>
 				</div>
