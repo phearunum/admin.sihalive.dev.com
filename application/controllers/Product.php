@@ -70,7 +70,7 @@ class Product extends CI_Controller {
 			$message =  $e->getMessage();
 		}
 		
-		$this->myfunc->gotoUrl('/#!/food/', $message);	
+		// $this->myfunc->gotoUrl('/#!/food/', $message);	
 	}
 	
 	public function delFood($f_id)
