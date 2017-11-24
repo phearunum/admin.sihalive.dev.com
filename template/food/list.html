@@ -1,4 +1,4 @@
-<div class="row-fluid" >
+<div class="row-fluid" ng-init="init()">
 	<!-- block -->
 	<div class="block" >
 		<div class="navbar navbar-inner block-header">
@@ -8,7 +8,34 @@
 			</div>
 		</div>
 		<div class="block-content collapse in">
-			<table class="table table-striped">
+			<form class="form-horizontal" id="frm">
+				<div >
+					<input name="p" ng-mdeol="data.p"    type="hidden" value="1" >
+					<span>records per page</span>
+					<select size="1" ng-model="data.records"　 ng-change="search()" style="width:60px;" name="records" >
+						<option value="1" >1</option>
+						<option value="10">10</option>
+						<option value="25">25</option>
+						<option value="50">50</option>
+						<option value="100">100</option>
+					</select>
+					<span>category:</span>
+					<select name="o_status" ng-change="search()" ng-model="data.ca_id" ng-init="data.ca_id='all'" style="width:150px;">
+						<option value="all">all</option>
+						<option value="{{category.ca_id}}" ng-repeat="category in data.category_list">{{category.ca_name}}</option>
+					</select>
+					<span>status</span>
+					<select  ng-model="data.f_status" ng-change="search()" style="width:100px;" name="status" >
+						<option value="all" >all</option>
+						<option value="sale_out" >sale_out</option>
+						<option value="sale_on" >sale_on</option>
+						<option value="sale_off" >sale_off</option>
+					</select>
+				</div>
+			</form>
+		</div>
+		<div class="block-content collapse in">
+			<table class="table">
 				<thead>
 					<tr>
 						<!-- <th>id</th> -->
@@ -24,19 +51,37 @@
 						<!-- <td>{{food.f_id}}</td> -->
 						<td>{{food.f_name}}</td>
 						<td>
-							large_price:{{food.f_large_price}}<br>
-							medium_price:{{food.f_medium_price}}<br>
-							small_price:{{food.f_small_price}}
+							{{food.f_large_price}}
 						</td>
 						<td>{{food.f_status}}</td>
 						<td>{{food.ca_name}}</td>
 						<td>
-							<a href="/Product/editForm/{{food.f_id}}" class="icon-cog"></a>
-							<a href="/Product/delFood/{{food.f_id}}" ng-click="del(food.f_id, $event)" class=" icon-remove"></a>
+							<a href="#!food/edit/?f_id={{food.f_id}}" class="icon-cog"></a>
+							<a href="" ng-click="del(food.f_id);event.preventDefault();" class=" icon-remove"></a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
+			<div class="row">
+				<div class="span6">
+					<div class="dataTables_info"  style="margin-left :32px" id="example_info">Showing {{pageInfo.limit.start}} to {{pageInfo.limit.end}} of {{data.total}} entries</div>
+				</div>
+				<div class="span6">
+					<div class="dataTables_paginate paging_bootstrap pagination">
+						<ul>
+							<li ng-show="pageInfo.pages" ng-click="page_prev(pageInfo.prev)" class="prev" ng-class="data.p=='1'?'disabled':''">
+								<a href="">← Previous</a>
+							</li>
+							<li  ng-click="setPage(page.p)" ng-class=" data.p  == page.p?'active':''" ng-repeat="page in pageInfo.pages">
+								<a href="">{{page.p}}</a>
+							</li>
+							<li ng-show="pageInfo.pages" ng-click="page_next(pageInfo.next)" class="next" ng-class="data.p==pages.length?'disabled':''">
+								<a href="">Next → </a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

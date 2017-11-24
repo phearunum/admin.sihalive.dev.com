@@ -103,18 +103,20 @@
 			</div>
 			<div class="row">
 				<div class="span6">
-					<div class="dataTables_info"  style="margin-left :32px" id="example_info">Showing 1 to 10 of {{total}} entries</div>
+					<div class="dataTables_info"  style="margin-left :32px" id="example_info">Showing {{pageInfo.limit.start}} to {{pageInfo.limit.end}} of {{data.total}} entries</div>
 				</div>
 				<div class="span6">
 					<div class="dataTables_paginate paging_bootstrap pagination">
 						<ul>
-							<li ng-show="pages" ng-click="page_prev(prev)" class="prev" ng-class="p=='1'?'disabled':''">
-								<a href="#">← Previous</a>
+							<li ng-show="pageInfo.pages" ng-click="page_prev(pageInfo.prev);event.preventDefault();" class="prev" ng-class="data.p=='1'?'disabled':''">
+								<a href="">← Previous</a>
 							</li>
-							<li  ng-click="setPage(page.p)" ng-class=" data.p  == page.p?'active':''" ng-repeat="page in pages">
+							<li  ng-click="setPage(page.p)" ng-class=" data.p  == page.p?'active':''" ng-repeat="page in pageInfo.pages">
 								<a href="">{{page.p}}</a>
 							</li>
-							<li ng-show="pages" ng-click="page_next(next)" class="next" ng-class="p==pages.length?'disabled':''"><a href="#">Next → </a></li>
+							<li ng-show="pageInfo.pages" ng-click="page_next(pageInfo.next);event.preventDefault();" class="next" ng-class="data.p==pageInfo.pages.length?'disabled':''">
+								<a href="">Next → </a>
+							</li>
 						</ul>
 					</div>
 				</div>

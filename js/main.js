@@ -12,70 +12,137 @@ var templatePath = "template/";
 var adminApp = angular.module("adminApp", ['ngRoute']);
 
 
-var foodEditCtrl = function($scope, $http){
-
+var foodEditCtrl = function($scope, $http, $routeParams){
 	$scope.status_list = [
         {value :'sale_out' , name:'sale_out'},
         {value :'sale_on' , name:'sale_on'},
         {value :'sale_off' , name:'sale_off'}
     ];
-	$http({
-		method: 'POST',
-		url: FoodForIdApi,
-		headers: {'Content-Type': 'application/json'},
-		data: {f_id:f_id}
-	}).then(
-		function successCallback(response) {
-			if(response['data']['status'] =='100')
-			{
-				if(action == 'edit')
+	$scope.data = {
+		food_url :food_url,
+		action : '/Product/doEdit'
+	};
+	$scope.init = function()
+	{
+		$http({
+			method: 'POST',
+			url: FoodForIdApi,
+			headers: {'Content-Type': 'application/json'},
+			data: {f_id:$routeParams.f_id}
+		}).then(
+			function successCallback(response) {
+				if(response['data']['status'] =='100')
 				{
 					$scope.food = response['data']['body']['row'];
+					
 					$scope.food['f_large_price'] =  parseFloat($scope.food['f_large_price']);
 					$scope.food['f_medium_price'] =  parseFloat($scope.food['f_medium_price']);
 					$scope.food['f_small_price'] =  parseFloat($scope.food['f_small_price']);
 					$scope.food['f_image'] =$scope.food.ca_id+'-'+$scope.food.f_id+'-310x260.png';
-					$scope.ca_id_selected =  response['data']['body']['row']['category_list'][$scope.food['ca_id']-1];
+					$scope.category_list = response['data']['body']['category_list'];
 				}else
 				{
-					// $scope.ca_id_selected =  response['data']['body']['row']['category_list'][0];
-					// $scope.f_status_selected = $scope.status_list[1];
+					alert(response['data']['message']);
 				}
-				$scope.category_list = response['data']['body']['row']['category_list'];
-			}else
-			{
-				alert(response['data']['message']);
+			}, 
+			function errorCallback(response) {
+				// 请求失败执行代码
 			}
-		}, 
-		function errorCallback(response) {
-			// 请求失败执行代码
-		}
-	); 
+		); 
+	}
+	
+	
 }
 
 var foodListCtrl = function($scope, $http){
+	$scope.data ={
+		'records':'10',
+		'p':'1',
+		'search_click'	:false,
+		'f_status'	:'sale_on',
+		'o_id'	:'',
+		'selectAll'	:false,
+		'action_area' :false
+	};
+
 	$scope.del = function(f_id, $event){
 		if(!confirm('confirm deletion'))
 		{
 			$event.preventDefault();
 		}
 	}
-	$http({
-        method: 'POST',
-        url: FoodListApi,
-		headers: {'Content-Type': 'application/json'},
-		data: {search :'all'}
-    }).then(
-		function successCallback(response) {
-			if(response['data']['status'] =='100')
-			{
-				$scope.foods = response['data']['body']['list'];
+	
+	$scope.search = function()
+	{
+		$scope.data.search_click = true;
+		$scope.data.action_area = false;
+		$scope.data.selectAll =false;
+		$scope.data.p =1;
+		$scope.foodList();
+	}
+	
+	$scope.init = function()
+	{
+		$scope.foodList();
+	}
+	
+	$scope.foodList = function()
+	{
+		
+		var params = { 
+			records	:	$scope.data.records, 
+			ca_id :	$scope.data.ca_id,
+			p	:	$scope.data.p,
+			f_status :$scope.data.f_status
+		};
+		var getData = $.param( params );
+		
+		$http({
+			method: 'GET',
+			url: FoodListApi+'?'+getData,
+			headers: {'Content-Type': 'application/json'},
+			data: {search :'all'},
+			async: false	
+		}).then(
+			function successCallback(response) {
+				if(response['data']['status'] =='100')
+				{
+					$scope.foods = response['data']['body']['list'];
+					$scope.pageInfo  = response['data']['body']['pageInfo'];
+					$scope.data.category_list = response['data']['body']['category_list'];
+					$scope.data.total = response['data']['body']['total'];
+
+				}
+			}, 
+			function errorCallback(response) {
+				// 请求失败执行代码
 			}
-        }, 
-		function errorCallback(response) {
-            // 请求失败执行代码
+		); 
+	}
+	
+	$scope.setPage = function(p)
+	{
+		$scope.data.p =  p;
+		$scope.foodList();
+	}
+	
+	$scope.page_prev = function(p){
+		if(p==0)
+		{
+			return false;
 		}
-	); 
+		$scope.data.p =  p;
+		$scope.foodList();
+	}
+	
+	$scope.page_next = function(p){
+		if($scope.data.p == $scope.pageInfo.pages.length)
+		{
+			return false;
+		}
+		$scope.data.p =  p;
+		$scope.foodList();
+	}
 };
 
 var ordersCtrl = function($scope, $http, $rootScope, $routeParams)
@@ -173,17 +240,39 @@ var ordersCtrl = function($scope, $http, $rootScope, $routeParams)
 	$scope.search = function()
 	{
 		$scope.data.search_click = true;
-		$scope.data.p='1';
 		$scope.data.action_area = false;
 		$scope.data.selectAll =false;
+		$scope.data.p =1;
 		$scope.ordersList();
 		
 	}
 	
 	$scope.setPage = function(p)
 	{
+		if(p == $scope.data.p)
+		{
+			return false;
+		}
 		$scope.data.p =  p;
-		$scope.search();
+		$scope.ordersList();
+	}
+	
+	$scope.page_prev = function(p){
+		if(p==0)
+		{
+			return false;
+		}
+		$scope.data.p =  p;
+		$scope.ordersList();
+	}
+	
+	$scope.page_next = function(p){
+		if($scope.data.p == $scope.pageInfo.pages.length)
+		{
+			return false;
+		}
+		$scope.data.p =  p;
+		$scope.ordersList();
 	}
 	
 	$scope.reset = function()
@@ -272,18 +361,7 @@ var ordersCtrl = function($scope, $http, $rootScope, $routeParams)
 
 		obj.change_status=false;
 	}
-	
-	$scope.page_prev = function(p){
-		$('input[name=p]').val(p);
-		$scope.p = p;
-		$scope.search();
-	}
-	
-	$scope.page_next = function(p){
-		$('input[name=p]').val(p);
-		$scope.p = p;
-		$scope.search();
-	}
+
 	
 		
 	
@@ -313,11 +391,9 @@ var ordersCtrl = function($scope, $http, $rootScope, $routeParams)
 				if(response['data']['status'] =='100')
 				{
 					$scope.orders = response['data']['body']['orders'];
-					$scope.prev = response['data']['body']['prev'];
-					$scope.next = response['data']['body']['next'];
 					$scope.order_status = response['data']['body']['order_status'];
-					$scope.pages = response['data']['body']['pages'];
-					$scope.total = response['data']['body']['total'];
+					$scope.data.total = response['data']['body']['total'];
+					$scope.pageInfo =response['data']['body']['pageInfo'];
 					$('.bar').width('100%');
 					$scope.isloading = false;
 				}else
@@ -457,7 +533,7 @@ adminApp.factory('MyService', ['$q', '$rootScope', '$http', function($q, $rootSc
 	return Service;
 }]);
 adminApp.controller('foodListCtrl',  ['$scope', '$http', foodListCtrl]);
-adminApp.controller('foodEditCtrl',  ['$scope', '$http', foodEditCtrl]);
+adminApp.controller('foodEditCtrl',  ['$scope', '$http', '$routeParams',foodEditCtrl]);
 adminApp.controller('ordersCtrl',  ['$scope', '$http', '$rootScope' ,'$routeParams', ordersCtrl]);
 adminApp.controller('bodyCtrl',  ['$scope', '$http', 'MyService' ,'orderCount' ,'$rootScope' ,bodyCtrl]);
 
@@ -470,8 +546,12 @@ adminApp.config(function($routeProvider){
 		cache: false,
     }
   ).when("/food",{
-		templateUrl: templatePath+"food/list.html",
+		templateUrl: templatePath+"food/list.html"+"?"+ Math.random(),
 		controller: "foodListCtrl", 
+		cache: false,
+  }).when("/food/edit",{
+		templateUrl: templatePath+"food/foodform.html"+"?"+ Math.random(),
+		controller: "foodEditCtrl", 
 		cache: false,
   })
 });

@@ -114,22 +114,50 @@
 		public function getFoodFroList($where = array())
 		{
 			$where_str =" 1 = 1 AND f_is_del='0'";
+			
 			if(!empty($where) )
 			{
-				foreach($where as $key =>$vale)
+				foreach($where as $key =>$value)
 				{
-					$where_str.=sprintf(" AND %s = ?", $key);
-					$bind[] = $value;
+					if($key =="records" || $key=="p" ||  $value=="all")
+					{
+						continue;
+					}
+					if($value !="")
+					{
+						if($key =="ca_id")
+						{
+							$prefix ="cy.";
+						}else{
+							$prefix ='';
+						}
+						$where_str.=sprintf(" AND %s%s = ?", $prefix,$key);
+						$bind[] = $value;
+					}
 				}
 			}
-			$sql ="	SELECT * 
+			$sql ="	SELECT 
+						fd.* ,
+						cy.ca_name
 					FROM 
 					food AS fd INNER JOIN category AS cy ON fd.ca_id = cy.ca_id
 						WHERE".$where_str;
-			$query = $this->db->query($sql, $bind);
+			$limit = sprintf(" LIMIT %d ,%d ", abs($where['p']-1)*$where['records'], $where['records']);			
+			$search_sql =$sql.$limit ;	
+			$query = $this->db->query($search_sql, $bind);
 			$rows  =  $query->result_array();
 			$query->free_result();
-			return $rows;
+			
+			$count_sql = "SELECT COUNT(t.f_id) AS total FROM (".$sql.") AS t";
+			$query = $this->db->query($count_sql, $bind);
+			$total =  $query->row_array();
+			$query->free_result();
+			
+			$output = array(
+				'rows'	=>$rows,
+				'total'	=>$total['total']
+			);
+			return $output;
 		}
 		
 	}

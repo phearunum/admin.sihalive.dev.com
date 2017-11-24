@@ -114,6 +114,32 @@ class Api extends CI_Controller {
 		$this->response($output);
 	}
 	
+	private function getPage($total, $records=1,$p=1)
+	{
+		$page_numbers = ceil($total/$records);
+		for($i=1;$i<=$page_numbers;$i++)
+		{
+			$pages[] = array('p'=>$i);
+		}
+		$start = abs($p-1)*$records+1;
+		$end = $start + $records;
+		if($total <$end)
+		{
+			$end = $total;
+		}
+		$output = array(
+			'pages' =>$pages,
+			'p' 	=>$p,
+			'limit' 	=>array(
+				'start'=>$start,
+				'end' =>$end
+			),
+			'prev' 	=>abs($p-1),
+			'next' 	=>$p+1,
+		);
+		return $output;
+	}
+	
 	public function orderList()
 	{
 		$output['status'] = 100;
@@ -126,15 +152,9 @@ class Api extends CI_Controller {
 			$output['body']['orders'] = $data['rows'];
 			$output['body']['total'] = $data['total'];
 			
-			$page_numbers = ceil($output['body']['total']/$ary['records'] );
-			for($i=1;$i<=$page_numbers;$i++)
-			{
-				$pages[] = array('p'=>$i);
-			}
-			$output['body']['pages'] = $pages ;
-			$output['body']['p'] = $ary['p'];
-			$output['body']['prev'] = abs($ary['p']-1);
-			$output['body']['next'] = $ary['p']+1;
+			$pageInfo = $this->getPage($data['total'], $ary['records'], $ary['p']);
+			$output['body']['pageInfo'] = $pageInfo;
+			
 			if(!empty($output['body']['orders']) )
 			{
 				foreach($output['body']['orders'] as $value)
@@ -183,7 +203,8 @@ class Api extends CI_Controller {
 			
 			$f_id =$this->request['f_id'];
 			$output['body']['row'] = $this->food->getFoodForId($f_id);
-			$output['body']['row']['category_list'] = $this->food->getFoodCategory();
+			$output['body']['category_list'] = $this->food->getFoodCategory();
+
 		}catch(Exception $e)
 		{
 			$output['status'] = $status ;
@@ -200,12 +221,13 @@ class Api extends CI_Controller {
 		$output['title'] ='get food list';
 		try 
 		{
-			$output['body']['list'] = $this->food->getFoodFroList();
-			if(empty($this->request))
-			{
-				$status ='000';
-				throw new Exception("request is empty");
-			}
+			$ary = $this->input->get();
+			$data = $this->food->getFoodFroList($ary);
+			$pageInfo = $this->getPage($data['total'], $ary['records'], $ary['p']);
+			$output['body']['list'] = $data['rows'];
+			$output['body']['total'] = $data['total'];
+			$output['body']['pageInfo'] = $pageInfo ;
+			$output['body']['category_list'] = $this->food->getFoodCategory();
 		}catch(Exception $e)
 		{
 			$output['status'] = $status ;

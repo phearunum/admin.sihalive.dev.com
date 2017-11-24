@@ -30,7 +30,7 @@
 						</a>
 						<ul class="dropdown-menu" id="menu1">
 							<li>
-								<a href="/">List</i>
+								<a href="/">List
 
 								</a>
 							</li>
@@ -42,7 +42,7 @@
 						</a>
 						<ul class="dropdown-menu" id="menu1">
 							<li>
-								<a href="#!food">List</i>
+								<a href="#!food">List
 
 								</a>
 							</li>

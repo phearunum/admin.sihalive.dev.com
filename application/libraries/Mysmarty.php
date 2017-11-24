@@ -34,9 +34,11 @@ class Mysmarty
 	
 	public function displayFrame($tpl="")
 	{
+		$config['food_url'] = $this->CI->config->item('food_url');
 		$this->assign(array(
 			'content'	=>$tpl,
 			'randseed'	=>$this->randseed,
+			'config'	=>$config
 		));
 		$this->smarty->display('Frontend/frame.tpl');
 	}

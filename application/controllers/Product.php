@@ -61,10 +61,7 @@ class Product extends CI_Controller {
 			
 			$row = $this->food->edit($post);
 			
-			if($row['afftected_rows'] == 0  && $imgupd !=1 )
-			{
-				throw new Exception("update error");
-			}
+
 			$message ='update ok';
 			
 			
@@ -73,7 +70,7 @@ class Product extends CI_Controller {
 			$message =  $e->getMessage();
 		}
 		
-		$this->myfunc->gotoUrl('/Product', $message);	
+		$this->myfunc->gotoUrl('/#!/food/', $message);	
 	}
 	
 	public function delFood($f_id)

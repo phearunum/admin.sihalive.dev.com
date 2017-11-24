@@ -8,7 +8,9 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 <script src="/assets/form-validation.js"></script>
-
+<script>
+	var food_url = '<{$config.food_url}>';
+</script>
 <script src="/js/main.js?<{$randseed}>"></script>
 
 <script src="/vendors/jquery.uniform.min.js"></script>
