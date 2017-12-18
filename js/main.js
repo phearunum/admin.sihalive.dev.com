@@ -480,7 +480,13 @@ adminApp.factory('MyService', ['$q', '$rootScope', '$http', function($q, $rootSc
 	var Service = {};
 	var url ="";
 	var uid ="001";
-	var socket = io('http://websokcet.sihalive.com:2120');
+	var host =location.protocol + '//' + location.host ;
+	console.log(host);
+	// var socket = io('host:2120');
+	// var socket = io('http://websokcet.sihalive.com:2120');
+	// var socket = io('http://admin.sihalive.dev.com:2120');
+	// console.log
+	var socket = io(host+':2120');
 	// var ws = new WebSocket("ws://"+ws_domain+":2120");
 	socket.on('connect', function(){
     	socket.emit('login', uid);
@@ -514,11 +520,12 @@ adminApp.factory('MyService', ['$q', '$rootScope', '$http', function($q, $rootSc
 								$('select[name=o_status]').val(1);
 								$('#search-btn').click();
 								$( this ).dialog( "close" );
+								$.stopSound();
 							  }
 							}
 						]
 					});
-					$.playSound("http://www.noiseaddicts.com/samples_1w72b820/3724.mp3")
+					$.playSound("/assets/sound/order_come.mp3");
 				}else
 				{
 					alert(response['data']['message']);
